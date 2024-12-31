@@ -1,7 +1,10 @@
 package ir.maktab.authenticationhibernate.model;
 
 
+import JPAHelper.model.BaseModel;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -9,15 +12,12 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 
 
 @Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@Table(name = "users")
+public class User extends BaseModel<Long> {
 
     private String userName;
 
@@ -25,8 +25,14 @@ public class User {
 
     private String email;
 
+    private String country;
+
+    private String phoneNumber;
+
     @OneToOne
-    private Role role;
+    @Builder.Default
+    @Cascade(value = org.hibernate.annotations.CascadeType.PERSIST)
+    private Role role= Role.builder().name("USER").build();
 
 
 }

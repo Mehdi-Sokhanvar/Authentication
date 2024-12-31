@@ -1,9 +1,11 @@
 package ir.maktab.authenticationhibernate.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Setter
@@ -23,13 +25,12 @@ public class Role {
 
     private String name;
 
-
-    //todo study a bout
-    @OneToOne
-    private User user;
-
     @OneToMany(mappedBy = "role")
-    private List<Permission> permissions = new ArrayList<>();
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    @Builder.Default
+    private List<Permission> permissions = Collections.singletonList(
+            Permission.builder().name("READ_PRIVILEGES")
+                    .build());
 
 
 }
